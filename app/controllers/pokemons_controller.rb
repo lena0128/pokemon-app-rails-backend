@@ -1,5 +1,5 @@
 class PokemonsController < ApplicationController
-    before_action :set_pokemon, only: [:show, :update, :destroy] 
+    # before_action :set_pokemon, only: [:show, :update, :destroy] 
 
     def index
         pokemons = Pokemon.all
@@ -7,6 +7,7 @@ class PokemonsController < ApplicationController
     end
 
     def show
+        pokemon = Pokemon.find_by(id: params[:id])
         render json: pokemon
     end
 
@@ -21,13 +22,16 @@ class PokemonsController < ApplicationController
     end
 
     def update
+        pokemon = Pokemon.find_by(id: params[:id])
         if pokemon.update(pokemon_params)
             render json: pokemon
         else
             render json: pokemon.errors, status: :unprocessable_entity
+        end
     end
 
     def destroy
+        pokemon = Pokemon.find_by(id: params[:id])
         pokemon.destroy
         render json: {message: "Successfully deleted!"}
     end
@@ -37,8 +41,8 @@ class PokemonsController < ApplicationController
         params.require(:pokemon).permit(:name, :poke_type, :weight, :front_image, :back_image)
     end
 
-    def set_pokemon
-        pokemon = Pokemon.find_by(id: params[:id])
-    end
+    # def set_pokemon
+    #     pokemon = Pokemon.find_by(id: params[:id])
+    # end
 
 end
